@@ -1,12 +1,35 @@
 ﻿@model IEnumerable<Zombie>
 
+@section Scripts {
+    <script>
+        $(".favorite").on("click", function(event) {
+            let baliseA = $(this);      // Allez chercher l'élément <a> qui a été cliqué.
+            //console.log(baliseA);     // Validation qu'on obtient bien l'élément voulu. (Voir console navigateur)
+            let idZombie = baliseA.attr("id");   // Obtenir l'id en utilisant attr sur l'élément <a> cliqué
+            //console.log(idZombie);    // Validation
+            $.post("/Zombie/Favorite", { "id": idZombie }, // Construction de la requête post car on modifie les données
+                function(data) {
+                    //console.log(data);    // Validation
+                    if (data) {
+                        baliseA.removeClass("text-dark");
+                        baliseA.addClass("text-primary");
+                    } else {
+                        baliseA.removeClass("text-primary");
+                        baliseA.addClass("text-dark");
+                    }
+                });
+        });
+    </script>
+}
+
+
 <div class="container p-3">
     <div class="row pt-4">
         <div class="col-10">
             <h2 class="text-primary">@Locals["Title"]</h2>
         </div>
         <div class="col-2 text-right">
-            <a asp-action="Create" class="btn btn-success">
+            <a asp-action="Create" class="btn btn-success" >
                 <i class="fas fa-plus-square"></i>&nbsp;@Locals["New"]
             </a>
         </div>
