@@ -58,6 +58,22 @@ namespace ZombieParty.Controllers
 
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Details(int id)
+        {
+            Zombie zombie = await _serviceZ.GetByIdAsync(id);
+
+            if (zombie == null)
+            {
+                return NotFound($"Could not find zombie with id: {id}");
+            }
+
+            
+            return PartialView("_ZombieDetails", zombie);
+
+
+        }
+
         public async Task<IActionResult> Delete(int id)
         {
             Zombie? zombie = await _baseDonnees.Zombies.Include(z => z.ZombieType).FirstOrDefaultAsync(z => z.Id == id);
